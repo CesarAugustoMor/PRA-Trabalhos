@@ -7,6 +7,7 @@ import java.awt.Font;
 import java.math.BigInteger;
 
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 import business.ISuperFatorial;
@@ -89,7 +90,6 @@ public class Janela1 {
 		
 		JRadioButton cacheDisco = new JRadioButton("Com cahe em disco");
 		tipoCalculo.add(cacheDisco);
-		cacheDisco.setEnabled(false);
 		cacheDisco.setBounds(10, 143, 261, 23);
 		frmCalculadoraDeSuperfatorial.getContentPane().add(cacheDisco);
 		
@@ -146,6 +146,9 @@ public class Janela1 {
 		JButton btnCancelar = new JButton("Cancelar");
 		btnCancelar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				//System.exit(0);
+				int i = JOptionPane.showConfirmDialog(null,"Deseja realmente sair?", "Saída",JOptionPane.YES_NO_OPTION);
+				if (i == JOptionPane.YES_OPTION)	System.exit(0);
 			}
 		});
 		btnCancelar.setBounds(335, 396, 89, 23);
