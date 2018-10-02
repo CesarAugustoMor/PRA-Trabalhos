@@ -29,7 +29,12 @@ public class SuperFatorial implements ISuperFatorial {
 			BigInteger output = BigInteger.ONE; 
         	for(int i = 2; i <= numero.intValue(); i++){
         		BigInteger indice = BigInteger.valueOf(i);
-        		output = output.multiply(getFatorial(indice));
+        		BigInteger fat=getFatorial(indice);
+        		if( !isNegativo(fat) ) {
+        			output = output.multiply(fat);
+        		}else {
+        			output=BigInteger.ONE.negate();
+        		}
         	}
     		return output;
 		}

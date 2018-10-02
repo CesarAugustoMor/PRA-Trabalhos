@@ -13,6 +13,7 @@ import javax.swing.JTextField;
 import business.ISuperFatorial;
 import business.SuperFatorial;
 import business.SuperFatorialCached;
+import business.SuperFatorialCachedDisc;
 import exceptions.InputException;
 
 import javax.swing.JRadioButton;
@@ -29,6 +30,7 @@ public class Janela1 {
 	private JTextField resultado;
 	private ISuperFatorial spF = new SuperFatorial();
 	private ISuperFatorial spFc = new SuperFatorialCached();
+	private ISuperFatorial spFcD = new SuperFatorialCachedDisc();
 
 	/**
 	 * Launch the application.
@@ -106,6 +108,7 @@ public class Janela1 {
 		JButton btnCalcular = new JButton("Calcular");
 		btnCalcular.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				resultado.setText("");
 				if (tipoCalculo.getSelection()==semCache.getModel()) {
 					BigInteger superfat = null;
 					BigInteger tmp=new BigInteger(valorASerCalculado.getText());
@@ -115,9 +118,9 @@ public class Janela1 {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-					if (superfat==null) {
-						resultado.setText("Não é possivel Calcular esse fatorial.Tente com um valor valido");
-					}else
+					if (superfat==null)
+						valorInvalido();
+					else
 					resultado.setText(superfat.toString());
 					
 				}
@@ -130,13 +133,32 @@ public class Janela1 {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-					if (superfat==null) {
-						resultado.setText("Não é possivel Calcular esse fatorial.Tente com um valor valido");
-					}else
+					if (superfat==null)
+						valorInvalido();
+					else
 					resultado.setText(superfat.toString());
 				}
 				else if (tipoCalculo.getSelection()==cacheDisco.getModel()) {
-					
+					BigInteger superfat = null;
+					BigInteger tmp=new BigInteger(valorASerCalculado.getText());
+					try {
+						superfat = spFcD.getSuperFatorial(tmp);
+					} catch (InputException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					if (superfat==null)
+						valorInvalido();
+					else if( superfat.equals(BigInteger.ONE.negate()) )
+						resultado.setText("Não é possivel Calcular esse fatorial. Valor Muito Grande. Tente com um valor valido");
+					else
+						resultado.setText(superfat.toString());
+				}
+			}
+
+			private void valorInvalido() {
+				{
+					resultado.setText("Não é possivel Calcular esse fatorial.Tente com um valor valido");
 				}
 			}
 		});
