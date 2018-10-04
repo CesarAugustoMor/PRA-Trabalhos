@@ -20,7 +20,7 @@ public class SuperFatorialCachedDisc extends SuperFatorial{
 	protected BigInteger getFatorial( BigInteger numero ) {
 		//RandomAccessFile tmp =new RandomAccessFile(new File("superFatorial.txt"), "rw");
 		//tmp.close();
-		caregaArquivo(Integer.valueOf(1));
+		caregaArquivo(key(numero));
 		
 		BigInteger result;
 		// procura no cache primeiro se existir retorna o valor
@@ -94,6 +94,7 @@ public class SuperFatorialCachedDisc extends SuperFatorial{
 		for (int i = 0; i < tam; i++) {
 			desperdicio.append(' ');
 		}
+		desperdicio.append(',');
 		return desperdicio.toString();
 	}
 	

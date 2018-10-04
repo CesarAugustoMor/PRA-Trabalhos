@@ -52,7 +52,7 @@ public class SuperFatorial implements ISuperFatorial {
 	}
 
 	protected BigInteger getFatorial( BigInteger numero ) {
-		if(numero == BigInteger.ZERO) return BigInteger.ONE; 
+		if(isZero(numero)) return BigInteger.ONE; 
         BigInteger output = BigInteger.ONE; 
         for(int i = 2; i <= numero.intValue(); i++){
         	BigInteger indice = BigInteger.valueOf(i);

@@ -70,4 +70,16 @@ public abstract class FatorialFileReader {
     void setValue(BigInteger value) {
 		this.value = value;
 	}
+    
+    @Override
+    public int hashCode() {
+    	
+    	int hash = 1;
+        hash = hash * 17 + (conteudo == null ? 0 : conteudo.hashCode());
+        hash = hash * 31 + key;
+        hash = hash * 13 + (value == null ? 0 : value.hashCode());
+        return hash;
+    	
+    }
+   
 }

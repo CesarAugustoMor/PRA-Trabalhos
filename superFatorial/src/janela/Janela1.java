@@ -109,7 +109,7 @@ public class Janela1 {
 		btnCalcular.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				resultado.setText("");
-				if (tipoCalculo.getSelection()==semCache.getModel()) {
+				if (botaoSelecionado(semCache)) {
 					BigInteger superfat = null;
 					BigInteger tmp=new BigInteger(valorASerCalculado.getText());
 					try {
@@ -124,7 +124,7 @@ public class Janela1 {
 					resultado.setText(superfat.toString());
 					
 				}
-				else if (tipoCalculo.getSelection()==cacheMemoria.getModel()) {
+				else if (botaoSelecionado(cacheMemoria)) {
 					BigInteger superfat = null;
 					BigInteger tmp=new BigInteger(valorASerCalculado.getText());
 					try {
@@ -138,7 +138,7 @@ public class Janela1 {
 					else
 					resultado.setText(superfat.toString());
 				}
-				else if (tipoCalculo.getSelection()==cacheDisco.getModel()) {
+				else if (botaoSelecionado(cacheDisco)) {
 					BigInteger superfat = null;
 					BigInteger tmp=new BigInteger(valorASerCalculado.getText());
 					try {
@@ -156,10 +156,12 @@ public class Janela1 {
 				}
 			}
 
+			private boolean botaoSelecionado(JRadioButton botao) {
+				return tipoCalculo.getSelection()==botao.getModel();
+			}
+
 			private void valorInvalido() {
-				{
-					resultado.setText("Não é possivel Calcular esse fatorial.Tente com um valor valido");
-				}
+				resultado.setText("Não é possivel Calcular esse fatorial.Tente com um valor valido");
 			}
 		});
 		btnCalcular.setBounds(236, 396, 89, 23);
