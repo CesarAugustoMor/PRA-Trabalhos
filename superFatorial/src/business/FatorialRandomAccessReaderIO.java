@@ -27,7 +27,7 @@ class FatorialRandomAccessReaderIO extends FatorialFileReader {
 	@Override
 	public void reader(String nome, int key) throws IOException {
 
-		final int RECORD_SIZE_IN_BYTES = 100;
+		final int RECORD_SIZE_IN_BYTES = 101;
 		
 		// No buffer deve caber o registro inteiro
 		final int BUFFER_SIZE_IN_BYTES = RECORD_SIZE_IN_BYTES ;
@@ -39,16 +39,19 @@ class FatorialRandomAccessReaderIO extends FatorialFileReader {
 		Long                offset   = (long) (RECORD_SIZE_IN_BYTES * key);
 		
 		sbc.position(offset);
-		sbc.read(buff);
-		buff.flip();
-		
-		String line = Charset.forName(encoding).decode(buff).toString();
-		this.setKey(Integer.parseInt(line.split(SEPARATOR)[KEY_INDEX]));
-		this.setValue(new BigInteger(line.split(SEPARATOR)[DATA_INDEX].trim()));
-		
-		buff.rewind();
-		buff.clear();
-
+		if (!(sbc.size()<offset)) {
+			sbc.read(buff);
+			buff.flip();
+			
+			String line = Charset.forName(encoding).decode(buff).toString();
+			System.out.println(line);
+			this.setKey(Integer.parseInt(line.split(SEPARATOR)[KEY_INDEX]));
+			System.out.println(Integer.parseInt(line.split(SEPARATOR)[KEY_INDEX]));
+			this.setValue(new BigInteger(line.split(SEPARATOR)[DATA_INDEX].trim()));
+			System.out.println(new BigInteger(line.split(SEPARATOR)[DATA_INDEX].trim()));
+			
+			buff.rewind();
+			buff.clear();
+		}
 	}
-
 }

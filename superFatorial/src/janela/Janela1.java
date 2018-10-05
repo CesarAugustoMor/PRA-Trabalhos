@@ -5,6 +5,7 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import java.awt.Font;
 import java.math.BigInteger;
+import java.util.HashMap;
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -28,9 +29,15 @@ public class Janela1 {
 	private JTextField valorASerCalculado;
 	private final ButtonGroup tipoCalculo = new ButtonGroup();
 	private JTextField resultado;
-	private ISuperFatorial spF = new SuperFatorial();
-	private ISuperFatorial spFc = new SuperFatorialCached();
-	private ISuperFatorial spFcD = new SuperFatorialCachedDisc();
+	private HashMap<String,ISuperFatorial> spF = new HashMap<>(); 
+	
+	private static final String OP1 = "Direto (sem cache)";
+	private static final String OP2 = "Com cache em mem\u00F3ria";
+	private static final String OP3 = "Com cahe em disco";
+	
+	private JRadioButton semCache = new JRadioButton(OP1);
+	private JRadioButton cacheMemoria = new JRadioButton(OP2);
+	private JRadioButton cacheDisco = new JRadioButton(OP3);
 
 	/**
 	 * Launch the application.
@@ -59,123 +66,115 @@ public class Janela1 {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
+		spF.put(OP1,new SuperFatorial() );
+		spF.put(OP2,new SuperFatorialCached() );
+		spF.put(OP3,new SuperFatorialCachedDisc() );
+		
+		semCache.setActionCommand( semCache.getText() );
+		cacheMemoria.setActionCommand( cacheMemoria.getText() );
+		cacheDisco.setActionCommand( cacheDisco.getText() );
+		
 		frmCalculadoraDeSuperfatorial = new JFrame();
+		
 		frmCalculadoraDeSuperfatorial.setTitle("Calculadora de SuperFatorial");
 		frmCalculadoraDeSuperfatorial.setFont(new Font("Arial", Font.PLAIN, 12));
 		frmCalculadoraDeSuperfatorial.setBounds(100, 100, 450, 470);
 		frmCalculadoraDeSuperfatorial.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmCalculadoraDeSuperfatorial.getContentPane().setLayout(null);
-		
+
 		JLabel lblValor = new JLabel("Valor:");
 		lblValor.setBounds(10, 11, 241, 14);
 		frmCalculadoraDeSuperfatorial.getContentPane().add(lblValor);
-		
+
 		valorASerCalculado = new JTextField();
 		valorASerCalculado.setBounds(10, 36, 414, 20);
 		frmCalculadoraDeSuperfatorial.getContentPane().add(valorASerCalculado);
 		valorASerCalculado.setColumns(10);
-		
+
 		JLabel lblTipoDeCalculo = new JLabel("Tipo de C\u00E1lculo:");
 		lblTipoDeCalculo.setBounds(10, 67, 241, 14);
 		frmCalculadoraDeSuperfatorial.getContentPane().add(lblTipoDeCalculo);
-		
-		JRadioButton semCache = new JRadioButton("Direto (sem cache)");
+
 		semCache.setSelected(true);
 		tipoCalculo.add(semCache);
 		semCache.setBounds(10, 91, 261, 23);
 		frmCalculadoraDeSuperfatorial.getContentPane().add(semCache);
-		
-		JRadioButton cacheMemoria = new JRadioButton("Com cache em mem\u00F3ria");
+
 		tipoCalculo.add(cacheMemoria);
 		cacheMemoria.setBounds(10, 117, 261, 23);
 		frmCalculadoraDeSuperfatorial.getContentPane().add(cacheMemoria);
-		
-		JRadioButton cacheDisco = new JRadioButton("Com cahe em disco");
+
 		tipoCalculo.add(cacheDisco);
 		cacheDisco.setBounds(10, 143, 261, 23);
 		frmCalculadoraDeSuperfatorial.getContentPane().add(cacheDisco);
-		
+
 		JLabel lblResultado = new JLabel("Resultado:");
 		lblResultado.setBounds(10, 173, 241, 14);
 		frmCalculadoraDeSuperfatorial.getContentPane().add(lblResultado);
-		
+
 		resultado = new JTextField();
 		resultado.setBounds(10, 198, 414, 187);
 		frmCalculadoraDeSuperfatorial.getContentPane().add(resultado);
 		resultado.setColumns(10);
 
-		
 		JButton btnCalcular = new JButton("Calcular");
 		btnCalcular.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
+			public void actionPerformed(ActionEvent evento) {
+				
 				resultado.setText("");
-				if (botaoSelecionado(semCache)) {
-					BigInteger superfat = null;
-					BigInteger tmp=new BigInteger(valorASerCalculado.getText());
-					try {
-						superfat = spF.getSuperFatorial(tmp);
-					} catch (InputException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-					if (superfat==null)
-						valorInvalido();
-					else
-					resultado.setText(superfat.toString());
-					
-				}
-				else if (botaoSelecionado(cacheMemoria)) {
-					BigInteger superfat = null;
-					BigInteger tmp=new BigInteger(valorASerCalculado.getText());
-					try {
-						superfat = spFc.getSuperFatorial(tmp);
-					} catch (InputException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-					if (superfat==null)
-						valorInvalido();
-					else
-					resultado.setText(superfat.toString());
-				}
-				else if (botaoSelecionado(cacheDisco)) {
-					BigInteger superfat = null;
-					BigInteger tmp=new BigInteger(valorASerCalculado.getText());
-					try {
-						superfat = spFcD.getSuperFatorial(tmp);
-					} catch (InputException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-					if (superfat==null)
-						valorInvalido();
-					else if( superfat.equals(BigInteger.ONE.negate()) )
-						resultado.setText("Não é possivel Calcular esse fatorial. Valor Muito Grande. Tente com um valor valido");
+				BigInteger superfat = null;
+				BigInteger tmp = new BigInteger(valorASerCalculado.getText());
+				try {
+					superfat = botaoSelecionado().getSuperFatorial(tmp);
+					if (superfat == null)
+						valorInvalido(1);
+					else if( isNegativo(superfat))
+						valorInvalido(2);
 					else
 						resultado.setText(superfat.toString());
+
+				} catch (InputException e) {
+					valorInvalido(1);
 				}
 			}
 
-			private boolean botaoSelecionado(JRadioButton botao) {
-				return tipoCalculo.getSelection()==botao.getModel();
+			private ISuperFatorial botaoSelecionado() {
+
+				if( semCache.isSelected() ) {
+					return spF.get(semCache.getText()); 
+				} else 
+					if( cacheMemoria.isSelected() )
+						return spF.get(cacheMemoria.getText());
+
+				return spF.get(cacheDisco.getText());
 			}
 
-			private void valorInvalido() {
-				resultado.setText("Não é possivel Calcular esse fatorial.Tente com um valor valido");
+			private void valorInvalido(int op) {
+				if (op==1)
+					resultado.setText("Não é possivel Calcular esse fatorial.Tente com um valor valido");
+				else
+					resultado.setText("Não é possivel Calcular esse fatorial. Valor Muito Grande. Tente com um valor valido");
 			}
 		});
 		btnCalcular.setBounds(236, 396, 89, 23);
 		frmCalculadoraDeSuperfatorial.getContentPane().add(btnCalcular);
-		
+
 		JButton btnCancelar = new JButton("Cancelar");
 		btnCancelar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//System.exit(0);
+				// System.exit(0);
 				int i = JOptionPane.showConfirmDialog(null,"Deseja realmente sair?", "Saída",JOptionPane.YES_NO_OPTION);
-				if (i == JOptionPane.YES_OPTION)	System.exit(0);
+				if (i == JOptionPane.YES_OPTION)
+					System.exit(0);
 			}
 		});
 		btnCancelar.setBounds(335, 396, 89, 23);
 		frmCalculadoraDeSuperfatorial.getContentPane().add(btnCancelar);
+	}
+	private boolean isNegativo(BigInteger numero) {
+		if (numero.compareTo(BigInteger.ZERO)==-1) {
+			return true;
+		}
+		return false;
 	}
 }
