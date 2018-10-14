@@ -10,7 +10,8 @@ import java.util.Map;
 public class SuperFatorialCachedDisc extends SuperFatorial {
 	private static final int FATORIAL_SIZE = 100;
 	private static final String NOMEARQUIVO = "Fatorial.txt";
-	// private static final Logger LOG = Logger.getLogger(SuperFatorialCachedDisc.class.getCanonicalName());
+	// private static final Logger LOG =
+	// Logger.getLogger(SuperFatorialCachedDisc.class.getCanonicalName());
 	/**
 	 * Cache em memória para o super fatorial
 	 **/
@@ -22,13 +23,11 @@ public class SuperFatorialCachedDisc extends SuperFatorial {
 		boolean file = carregaArquivo(key(numero));
 		System.out.println("Após carga do arquivo " + file);
 
-		//Verifica se foi carregado algum dado do arquivo;
-		if (!arquivoValueNull())
+		// Verifica se foi carregado algum dado do arquivo;
+		if (!arquivoValueNull()) {
 			getValueAndSetNullValue(numero);
-
-		// procura no cache primeiro se existir retorna o valor
-		// se nao existir calcula e adiciona no cache
-		if (cache.isEmpty()) {
+			return arquivo.getValue();
+		} else if (cache.isEmpty()) {
 			System.out.println("O cache esta vazio");
 			return calcFatEAdd(numero);
 		} else if (cache.containsKey(key(numero))) {
@@ -63,7 +62,7 @@ public class SuperFatorialCachedDisc extends SuperFatorial {
 	private BigInteger calcFatEAdd(BigInteger numero) {
 		BigInteger result;
 		result = super.getFatorial(numero);
-		if (isMenor(result.toString(), FATORIAL_SIZE) ) {
+		if (isMenor(result.toString(), FATORIAL_SIZE)) {
 			System.out.println("Fatorial menor que " + FATORIAL_SIZE);
 			arquivo.escreveArquivo(NOMEARQUIVO, key(numero), geraFatDesp(result, FATORIAL_SIZE + 1));
 			// cache.put(key(numero), result);
@@ -89,13 +88,13 @@ public class SuperFatorialCachedDisc extends SuperFatorial {
 	private int calculaDesperdicio(BigInteger fat, int tam) {
 		int desperdicio = 0;
 		String sFat = fat.toString();
-		if (isMenor(sFat, tam )) {
+		if (isMenor(sFat, tam)) {
 			desperdicio = tam - sFat.length();
 		}
 		return desperdicio;
 	}
 
-	private boolean isMenor( String sFat, int tam ) {
+	private boolean isMenor(String sFat, int tam) {
 		return sFat.length() < tam;
 	}
 

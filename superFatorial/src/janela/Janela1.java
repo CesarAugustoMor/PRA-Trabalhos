@@ -11,6 +11,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
+import business.Crc;
 import business.ISuperFatorial;
 import business.SuperFatorial;
 import business.SuperFatorialCached;
@@ -170,6 +171,35 @@ public class Janela1 {
 		});
 		btnCancelar.setBounds(335, 396, 89, 23);
 		frmCalculadoraDeSuperfatorial.getContentPane().add(btnCancelar);
+		
+		JButton btnGerarCrc = new JButton("Gerar CRC");
+		btnGerarCrc.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				Crc crc = new Crc();
+				boolean b =crc.gerarResumo("Fatorial.txt");
+				if (!b) {
+					JOptionPane.showMessageDialog(null, "Não Foi Possovel gerar o crc", "Alert", 0);
+				}
+				//cod
+			}
+		});
+		btnGerarCrc.setBounds(10, 396, 99, 23);
+		frmCalculadoraDeSuperfatorial.getContentPane().add(btnGerarCrc);
+		
+		JButton btnVerificarCrc = new JButton("Verif. CRC");
+		btnVerificarCrc.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				Crc crc = new Crc();
+				boolean b =crc.verificarResumo("Fatorial.txt");
+				if (!b) {
+					JOptionPane.showMessageDialog(null, "Não Foi Possovel verificar o crc do arquivo", "Alert", 0);
+				}
+				//cod
+			}
+		});
+		btnVerificarCrc.setBounds(119, 396, 107, 23);
+		frmCalculadoraDeSuperfatorial.getContentPane().add(btnVerificarCrc);
+		
 	}
 	private boolean isNegativo(BigInteger numero) {
 		if (numero.compareTo(BigInteger.ZERO)==-1) {

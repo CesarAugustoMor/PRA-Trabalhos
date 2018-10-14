@@ -1,14 +1,14 @@
 package business;
 
+import static java.nio.file.StandardOpenOption.READ;
+import static java.nio.file.StandardOpenOption.WRITE;
+
 import java.nio.channels.SeekableByteChannel;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.EnumSet;
-import static java.nio.file.StandardOpenOption.READ;
-import static java.nio.file.StandardOpenOption.WRITE;
-
 import java.io.IOException;
 import java.math.BigInteger;
 import java.nio.ByteBuffer;
@@ -36,7 +36,6 @@ class FatorialRandomAccessReaderIO extends FatorialFileReader {
 
 		Path path = Paths.get(nome);
 		ByteBuffer buff = ByteBuffer.allocate(BUFFER_SIZE_IN_BYTES);
-		String encoding = System.getProperty("file.encoding");
 		SeekableByteChannel sbc = null;
 		try {
 			sbc = Files.newByteChannel(path, EnumSet.of(READ));
@@ -44,7 +43,7 @@ class FatorialRandomAccessReaderIO extends FatorialFileReader {
 			System.out.println("Problema na leitura do arquivo" + e);
 		}
 		Long offset = (long) (RECORD_SIZE_IN_BYTES * key);
-		System.out.println("Arquivo localizado");
+		System.out.println("Arquivo localizado size : " + sbc.size());
 		sbc.position(offset);
 		System.out.println("Ponteiro posicionado para leitura na posição: " + sbc.position());
 		if (leituraValida(sbc, offset)) {
@@ -52,7 +51,7 @@ class FatorialRandomAccessReaderIO extends FatorialFileReader {
 			System.out.println("Dados lidos do arquivo");
 			buff.flip();
 			System.out.println("Apresentando resultados");
-			String line = Charset.forName(encoding).decode(buff).toString();
+			String line = Charset.forName(ENCODING).decode(buff).toString();
 			System.out.println(line);
 			this.setValue(new BigInteger(line.split(SEPARATOR)[DATA_INDEX].trim()));
 			System.out.println(new BigInteger(line.split(SEPARATOR)[DATA_INDEX].trim()));
