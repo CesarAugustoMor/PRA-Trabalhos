@@ -29,7 +29,7 @@ class FatorialRandomAccessReaderIO extends FatorialFileReader {
 	@Override
 	public void reader(String nome, int key) throws IOException {
 
-		final int RECORD_SIZE_IN_BYTES = 101;
+		final int RECORD_SIZE_IN_BYTES = 1001;
 
 		// No buffer deve caber o registro inteiro
 		final int BUFFER_SIZE_IN_BYTES = RECORD_SIZE_IN_BYTES;
@@ -74,7 +74,7 @@ class FatorialRandomAccessReaderIO extends FatorialFileReader {
 	 */
 	public void escreveArquivo(String arquivo, Integer key, String result) {
 
-		final int FATORIAL_SIZE = 100;
+		final int FATORIAL_SIZE = 1000;
 		final int LINE_FEED_SIZE = 1;
 		final int RECORD_SIZE_IN_BYTES = FATORIAL_SIZE + LINE_FEED_SIZE;
 

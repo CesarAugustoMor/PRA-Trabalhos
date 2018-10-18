@@ -8,7 +8,7 @@ import java.util.Map;
 //import business.FatorialRandomAccessReaderIO;
 
 public class SuperFatorialCachedDisc extends SuperFatorial {
-	private static final int FATORIAL_SIZE = 100;
+	private static final int FATORIAL_SIZE = 1000;
 	private static final String NOMEARQUIVO = "Fatorial.txt";
 	// private static final Logger LOG =
 	// Logger.getLogger(SuperFatorialCachedDisc.class.getCanonicalName());
@@ -20,18 +20,19 @@ public class SuperFatorialCachedDisc extends SuperFatorial {
 
 	protected BigInteger getFatorial(BigInteger numero) {
 
-		boolean file = carregaArquivo(key(numero));
-		System.out.println("Após carga do arquivo " + file);
 
 		// Verifica se foi carregado algum dado do arquivo;
-		if (!arquivoValueNull()) {
-			getValueAndSetNullValue(numero);
-			return arquivo.getValue();
-		} else if (cache.isEmpty()) {
+		if (cache.isEmpty()) {
 			System.out.println("O cache esta vazio");
 			return calcFatEAdd(numero);
 		} else if (cache.containsKey(key(numero))) {
 			System.out.println("O valor foi encontrado no cache");
+			return cache.get(key(numero));
+		} else if (!arquivoValueNull()) {
+			System.out.println("O cache esta vazio");
+			boolean file = carregaArquivo(key(numero));
+			System.out.println("Após carga do arquivo " + file);
+			getValueAndSetNullValue(numero);
 			return cache.get(key(numero));
 		} else {
 			System.out.println("O valor não foi encontrado no cache");
@@ -65,11 +66,11 @@ public class SuperFatorialCachedDisc extends SuperFatorial {
 		if (isMenor(result.toString(), FATORIAL_SIZE)) {
 			System.out.println("Fatorial menor que " + FATORIAL_SIZE);
 			arquivo.escreveArquivo(NOMEARQUIVO, key(numero), geraFatDesp(result, FATORIAL_SIZE + 1));
-			// cache.put(key(numero), result);
+			cache.put(key(numero), result);
 		} else if (isIgual(result.toString(), FATORIAL_SIZE)) {
 			System.out.println("Fatorial igual " + FATORIAL_SIZE);
 			arquivo.escreveArquivo(NOMEARQUIVO, key(numero), geraFatDesp(result, 1));
-			// cache.put(key(numero), result);
+			cache.put(key(numero), result);
 		} else {
 			System.out.println("Fatorial muito grande");
 			result = BigInteger.ONE.negate();
