@@ -66,7 +66,7 @@ public class Crc {
 			try {
 				String  resumo = calcularResumo(conteudo);
 				System.out.println("Resumo: " + resumo);
-				boolean r = gravarResumoEmUmArquivoDeControleParaFatoriais(nomeArquivo, resumo);
+				boolean r = gravarResumoEmUmArquivoDeControleParaFatoriais(CRC_ARQUIVO, resumo);
 				System.out.println(System.currentTimeMillis() + ": " + r);
 				return true;
 			} catch (NoSuchAlgorithmException e) {
