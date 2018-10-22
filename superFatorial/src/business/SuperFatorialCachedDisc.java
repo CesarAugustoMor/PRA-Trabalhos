@@ -22,20 +22,26 @@ public class SuperFatorialCachedDisc extends SuperFatorial {
 
 
 		// Verifica se foi carregado algum dado do arquivo;
+		boolean file = carregaArquivo(key(numero));
+		System.out.println("Após carga do arquivo " + file);
+		
 		if (cache.isEmpty()) {
 			System.out.println("O cache esta vazio");
 			return calcFatEAdd(numero);
 		} else if (cache.containsKey(key(numero))) {
 			System.out.println("O valor foi encontrado no cache");
 			return cache.get(key(numero));
-		} else if (!arquivoValueNull()) {
-			System.out.println("O cache esta vazio");
-			boolean file = carregaArquivo(key(numero));
-			System.out.println("Após carga do arquivo " + file);
-			getValueAndSetNullValue(numero);
-			return cache.get(key(numero));
+		} else if (file) {
+			if (!arquivoValueNull()) {
+				System.out.println("O cache esta vazio");
+				getValueAndSetNullValue(numero);
+				return cache.get(key(numero));
+			} else {
+				System.out.println("O valor não foi encontrado no cache");
+				return calcFatEAdd(numero);
+			}
 		} else {
-			System.out.println("O valor não foi encontrado no cache");
+			System.out.println("O valor não foi encontrado no cache e ocoreu eceção na leitura do arquivo");
 			return calcFatEAdd(numero);
 		}
 	}
