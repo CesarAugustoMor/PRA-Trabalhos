@@ -48,21 +48,7 @@ public class NaiveSearch implements ISearchStrategy {
 
 	@Override
 	public void prepareSearch(String text) {
-		this.linhas=new ArrayList<>();
-		int linhas = 0;
-		this.linhas.add(linhas, new StringBuilder());
-		for (int i = 0; i < text.length(); i++) {
-			if (text.charAt(i) == '\n') {
-				linhas++;
-				this.linhas.add(linhas, new StringBuilder());
-				System.out.println("Linha :" + linhas + " atual da preparação para busca");
-			} else {
-				StringBuilder tmp=new StringBuilder(this.linhas.get(linhas).toString());
-				tmp.append(text.charAt(i));
-				this.linhas.set(linhas, tmp);
-			}
-		}
-		this.linhas.trimToSize();
+		this.linhas = prePrepareSearch(text);
 	}
 
 }
