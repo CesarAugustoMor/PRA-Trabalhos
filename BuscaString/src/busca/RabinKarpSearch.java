@@ -13,22 +13,21 @@ import java.util.ArrayList;
 public class RabinKarpSearch implements ISearchStrategy {
 
 	// d is the number of characters in the input alphabet
-	private final static int d = 256; // Number of characters in the alphabet
-	private final static int q = 101;
+	private final static int ALPHABET_SIZE = 256; // Number of characters in the alphabet
+	private final static int q = 101; // Prime Number
 	private int h = 1;
+	private ArrayList<StringBuilder> linhas;
 	private ArrayList<Integer> tamanhoLinhas; // size of lines
 	private int i = 0, j = 0;
 	private int hashWord = 0; // hash value for pattern
 	private int hashText = 0; // hash value for text
-	private ArrayList<StringBuilder> linhas;
 
 	@Override
 	public void prepareSearch(String text) {
 		this.tamanhoLinhas = new ArrayList<Integer>();
 		this.linhas = prePrepareSearch(text);
-		for (int i = 0; i < this.linhas.size(); i++) {
+		for (int i = 0; i < this.linhas.size(); i++)
 			this.tamanhoLinhas.add(i, this.linhas.get(i).length());
-		}
 
 	}
 
@@ -74,7 +73,7 @@ public class RabinKarpSearch implements ISearchStrategy {
 	}
 
 	private void geraPrimeiroHashText(int index) {
-		hashText = (d * hashText + linhas.get(index).charAt(i)) % q;
+		hashText = (ALPHABET_SIZE * hashText + linhas.get(index).charAt(i)) % q;
 	}
 
 	private boolean letrasDiferentes(String word, int index) {
@@ -82,7 +81,7 @@ public class RabinKarpSearch implements ISearchStrategy {
 	}
 
 	private void calculaNovoHashText(int m, int index) {
-		hashText = (d * (hashText - linhas.get(index).charAt(i) * h) + linhas.get(index).charAt(i + m)) % q;
+		hashText = (ALPHABET_SIZE * (hashText - linhas.get(index).charAt(i) * h) + linhas.get(index).charAt(i + m)) % q;
 	}
 
 	private WordLocation geraLocalizacaoWord(int index) {
@@ -110,9 +109,9 @@ public class RabinKarpSearch implements ISearchStrategy {
 	}
 
 	private void iniciaHandHashWord(String word) {
-		h = (h * d) % q;
+		h = (h * ALPHABET_SIZE) % q;
 		for (int i = 0; i < word.length(); i++) {
-			hashWord = (d * hashWord + word.charAt(i)) % q;
+			hashWord = (ALPHABET_SIZE * hashWord + word.charAt(i)) % q;
 		}
 	}
 }

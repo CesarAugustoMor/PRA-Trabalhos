@@ -38,7 +38,7 @@ public interface ISearchStrategy {
 			if (text.charAt(i) == '\n') {
 				linhasIndex++;
 				linhas.add(linhasIndex, new StringBuilder());
-				System.out.println("Linha :" + linhasIndex + " atual da preparação para busca");
+				System.out.println("Linha: " + linhasIndex + " atual da preparação para busca");
 			} else {
 				StringBuilder tmp = new StringBuilder(linhas.get(linhasIndex).toString());
 				tmp.append(text.charAt(i));
