@@ -11,7 +11,7 @@ public class NaiveSearch implements ISearchStrategy {
 
 	@Override
 	public WordLocation search(String word) {
-		if (this.linhas != null) {
+		if (this.linhas == null) {
 			System.out.println("Texto Nullo, utilize primeiro a função 'prepareSearch'");
 			return null;
 		}
@@ -37,7 +37,7 @@ public class NaiveSearch implements ISearchStrategy {
 				if (j1 == M) { // if pat[0...M-1] = txt[i, i+1, ...i+M-1]
 					location.setColumn(i1);
 					location.setLine(k);
-					System.out.println("Word found at index " + i1);
+					//System.out.println("Word found at index " + i1);
 					return location;
 				}
 			}

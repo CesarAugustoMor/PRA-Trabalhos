@@ -52,7 +52,7 @@ public class KMPSearch implements ISearchStrategy {
 				}
 				if (quantidadeLetrasText_Igual_quantidadeLetrasWord(m)) {
 					System.out.println("Found pattern at index " + (i - j));
-					j = lps[j - 1];
+					//j = lps[j - 1];
 					return geraLocalizacaoWord(index, i - j);
 				}
 				// mismatch after j matches
