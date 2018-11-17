@@ -166,7 +166,7 @@ public class Janela1 {
 				// System.exit(0);
 				int i = JOptionPane.showConfirmDialog(null,"Deseja realmente sair?", "Saída",JOptionPane.YES_NO_OPTION);
 				if (i == JOptionPane.YES_OPTION)
-					System.exit(0);
+					System.exit(NORMAL);
 			}
 		});
 		btnCancelar.setBounds(335, 396, 89, 23);
