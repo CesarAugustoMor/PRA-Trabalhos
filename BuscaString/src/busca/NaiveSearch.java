@@ -42,7 +42,10 @@ public class NaiveSearch implements ISearchStrategy {
 				}
 			}
 		}
-		return null;
+		WordLocation nul =new WordLocation();
+		nul.setColumn(-1);
+		nul.setLine(-1);
+		return nul;
 
 	}
 

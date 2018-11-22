@@ -68,8 +68,11 @@ public class KMPSearch implements ISearchStrategy {
 			i = 0;
 			j = 0;
 		}
+		WordLocation nul =new WordLocation();
+		nul.setColumn(-1);
+		nul.setLine(-1);
 
-		return null;
+		return nul;
 	}
 
 	private boolean existeText_e_letrasDiferentes(String word, int index) {

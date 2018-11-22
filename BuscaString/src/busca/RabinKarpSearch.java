@@ -48,10 +48,13 @@ public class RabinKarpSearch implements ISearchStrategy {
 			for (i = 0; i <= this.tamanhoLinhas.get(index) - M; i++) {
 
 				if (hashWord_Igual_HashText()) {
-					/* Check for characters one by one */
-					for (j = 0; j < M; j++) {
-						if (letrasDiferentes(word, index))
-							break;
+					j=0;
+					boolean letras = false;
+					while (!letras && j < M) {
+						if (letrasDiferentes(word, index)) {
+							letras = true;
+						}
+						j++;
 					}
 
 					if (quantidadeLetrasText_Igual_quantidadeLetrasWord(M)) {
@@ -69,7 +72,10 @@ public class RabinKarpSearch implements ISearchStrategy {
 				}
 			}
 		}
-		return null;
+		WordLocation nul =new WordLocation();
+		nul.setColumn(-1);
+		nul.setLine(-1);
+		return nul;
 	}
 
 	private void geraPrimeiroHashText(int index) {
@@ -109,8 +115,9 @@ public class RabinKarpSearch implements ISearchStrategy {
 	}
 
 	private void iniciaHandHashWord(String word) {
-		h = (h * ALPHABET_SIZE) % q;
-		for (int i = 0; i < word.length(); i++) {
+		for (i = 0; i < word.length()-1; i++) 
+			h = (h * ALPHABET_SIZE) % q;
+		for (i = 0; i < word.length(); i++) {
 			hashWord = (ALPHABET_SIZE * hashWord + word.charAt(i)) % q;
 		}
 	}

@@ -55,8 +55,11 @@ public class BoyerMooreSearch implements ISearchStrategy {
 				}
 			}
 		}
+		WordLocation nul =new WordLocation();
+		nul.setColumn(-1);
+		nul.setLine(-1);
 
-		return null;
+		return nul;
 	}
 
 	private boolean letrasDiferentes(char a, char b) {

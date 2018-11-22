@@ -67,8 +67,11 @@ public class RadixTree implements ISearchStrategy {
 			location.setLine(linha);
 			return location;
 		}
+		WordLocation nul =new WordLocation();
+		nul.setColumn(-1);
+		nul.setLine(-1);
 
-		return null;
+		return nul;
 	}
 
 	// Tree node
@@ -125,7 +128,7 @@ public class RadixTree implements ISearchStrategy {
 
 		return (pCrawl != null && pCrawl.isEndOfWord);
 	}
-
+/*
 	// Driver
 	public static void main(String args[]) {
 		// Input keys (use only 'a' through 'z' and lower case)
@@ -160,5 +163,5 @@ public class RadixTree implements ISearchStrategy {
 		else
 			System.out.println("thaw --- " + output[0]);
 
-	}
+	}*/
 }

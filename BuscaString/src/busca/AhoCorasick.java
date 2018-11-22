@@ -57,7 +57,10 @@ public class AhoCorasick implements ISearchStrategy {
 				linha = i;
 				break;
 			} else if (i == (linhas.size() - 1)) {
-				return null;
+				WordLocation nul = new WordLocation();
+				nul.setColumn(-1);
+				nul.setLine(-1);
+				return nul;
 			}
 
 		}
