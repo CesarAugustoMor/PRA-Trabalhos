@@ -121,4 +121,16 @@ public class RabinKarpSearch implements ISearchStrategy {
 			hashWord = (ALPHABET_SIZE * hashWord + word.charAt(i)) % q;
 		}
 	}
+
+	@Override
+	public void limpa() {
+		h = 1;
+		linhas=null;
+		tamanhoLinhas=null; // size of lines
+		i = 0;
+		j = 0;
+		hashWord = 0; // hash value for pattern
+		hashText = 0;
+		
+	}
 }

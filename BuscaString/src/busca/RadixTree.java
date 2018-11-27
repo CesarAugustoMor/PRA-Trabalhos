@@ -164,4 +164,13 @@ public class RadixTree implements ISearchStrategy {
 			System.out.println("thaw --- " + output[0]);
 
 	}*/
+
+	@Override
+	public void limpa() {
+		root=null;
+		linhas=null;
+		tamanhoLinhas=null; // size of lines
+		palavras=null;
+		
+	}
 }

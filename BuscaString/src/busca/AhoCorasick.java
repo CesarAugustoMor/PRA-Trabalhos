@@ -119,4 +119,10 @@ public class AhoCorasick implements ISearchStrategy {
 		return node.transitions[c];
 	}
 
+	@Override
+	public void limpa() {
+		linhas=null;
+		nodes=null;
+	}
+
 }

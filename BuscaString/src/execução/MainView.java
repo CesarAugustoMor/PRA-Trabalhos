@@ -5,13 +5,33 @@
  */
 package execução;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.GroupLayout;
+import javax.swing.LayoutStyle.ComponentPlacement;
+
+import arquivo.LeituraArquivo;
+import busca.BoyerMooreSearch;
+import busca.ISearchStrategy;
+import busca.KMPSearch;
+import busca.NaiveSearch;
+import busca.RabinKarpSearch;
+import busca.WordLocation;
+
+import javax.swing.AbstractListModel;
 
 /**
  *
  * @author udesc
  */
 public class MainView extends javax.swing.JFrame implements IMainView{
+	Map<Integer, ArrayList<WordLocation>> arqlocation=new HashMap<Integer, ArrayList<WordLocation>>();
 
     /**
      * Creates new form MainView
@@ -31,7 +51,6 @@ public class MainView extends javax.swing.JFrame implements IMainView{
 
         btnAddFile = new javax.swing.JButton();
         scrollFilesPanesl = new javax.swing.JScrollPane();
-        listFiles = new javax.swing.JList<>();
         labelFiles = new javax.swing.JLabel();
         labelWord = new javax.swing.JLabel();
         btnFindWord = new javax.swing.JButton();
@@ -40,7 +59,6 @@ public class MainView extends javax.swing.JFrame implements IMainView{
         labelTitle = new javax.swing.JLabel();
         textWord = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
-        textResult = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Pesquisa de String");
@@ -51,13 +69,6 @@ public class MainView extends javax.swing.JFrame implements IMainView{
                 btnAddFileActionPerformed(evt);
             }
         });
-
-        listFiles.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Arquivo1.txt", "Arquivo2.txt", "Arquivo3.txt" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
-        scrollFilesPanesl.setViewportView(listFiles);
 
         labelFiles.setText("Arquivos usados para procura");
 
@@ -82,69 +93,78 @@ public class MainView extends javax.swing.JFrame implements IMainView{
         labelTitle.setFont(new java.awt.Font("Tahoma", 3, 14)); // NOI18N
         labelTitle.setText("Pesquisa de palavras em arquivos");
 
-        textWord.setText("digite a palavra que serÃ¡ procurada");
-
-        textResult.setColumns(20);
-        textResult.setRows(5);
-        jScrollPane1.setViewportView(textResult);
+        textWord.setText("digite a palavra que ser\u00E1 procurada");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1)
-                    .addComponent(scrollFilesPanesl)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(btnExit, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(6, 6, 6)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(labelResult)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(labelWord)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(textWord, javax.swing.GroupLayout.PREFERRED_SIZE, 364, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(btnAddFile, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGap(4, 4, 4))
-                            .addComponent(btnFindWord, javax.swing.GroupLayout.DEFAULT_SIZE, 125, Short.MAX_VALUE)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(labelFiles)
-                            .addComponent(labelTitle))
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
+        	layout.createParallelGroup(Alignment.TRAILING)
+        		.addGroup(layout.createSequentialGroup()
+        			.addContainerGap()
+        			.addGroup(layout.createParallelGroup(Alignment.LEADING)
+        				.addComponent(scrollFilesPanesl, GroupLayout.DEFAULT_SIZE, 934, Short.MAX_VALUE)
+        				.addGroup(layout.createSequentialGroup()
+        					.addGroup(layout.createParallelGroup(Alignment.LEADING)
+        						.addComponent(labelFiles)
+        						.addComponent(labelTitle))
+        					.addGap(0, 704, Short.MAX_VALUE))
+        				.addGroup(layout.createParallelGroup(Alignment.TRAILING)
+        					.addComponent(btnExit, GroupLayout.PREFERRED_SIZE, 85, GroupLayout.PREFERRED_SIZE)
+        					.addComponent(jScrollPane1, GroupLayout.PREFERRED_SIZE, 664, GroupLayout.PREFERRED_SIZE))
+        				.addComponent(labelResult)
+        				.addGroup(layout.createSequentialGroup()
+        					.addComponent(labelWord)
+        					.addPreferredGap(ComponentPlacement.RELATED)
+        					.addComponent(textWord, GroupLayout.PREFERRED_SIZE, 440, GroupLayout.PREFERRED_SIZE)
+        					.addPreferredGap(ComponentPlacement.UNRELATED)
+        					.addGroup(layout.createParallelGroup(Alignment.LEADING, false)
+        						.addGroup(layout.createSequentialGroup()
+        							.addComponent(btnAddFile, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        							.addGap(4))
+        						.addComponent(btnFindWord, GroupLayout.PREFERRED_SIZE, 246, GroupLayout.PREFERRED_SIZE))))
+        			.addContainerGap())
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(labelTitle)
-                .addGap(29, 29, 29)
-                .addComponent(labelFiles)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(scrollFilesPanesl, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnAddFile)
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnFindWord, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(labelWord)
-                    .addComponent(textWord, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(labelResult)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnExit)
-                .addContainerGap(15, Short.MAX_VALUE))
+        	layout.createParallelGroup(Alignment.LEADING)
+        		.addGroup(layout.createSequentialGroup()
+        			.addContainerGap()
+        			.addComponent(labelTitle)
+        			.addGap(29)
+        			.addComponent(labelFiles)
+        			.addPreferredGap(ComponentPlacement.RELATED)
+        			.addComponent(scrollFilesPanesl, GroupLayout.DEFAULT_SIZE, 187, Short.MAX_VALUE)
+        			.addPreferredGap(ComponentPlacement.UNRELATED)
+        			.addComponent(btnAddFile)
+        			.addGap(18)
+        			.addGroup(layout.createParallelGroup(Alignment.BASELINE)
+        				.addComponent(btnFindWord, GroupLayout.PREFERRED_SIZE, 20, GroupLayout.PREFERRED_SIZE)
+        				.addComponent(labelWord)
+        				.addComponent(textWord, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+        			.addPreferredGap(ComponentPlacement.RELATED)
+        			.addComponent(labelResult)
+        			.addPreferredGap(ComponentPlacement.RELATED)
+        			.addComponent(jScrollPane1, GroupLayout.PREFERRED_SIZE, 148, GroupLayout.PREFERRED_SIZE)
+        			.addGap(118)
+        			.addComponent(btnExit)
+        			.addContainerGap())
         );
+        textResult = new javax.swing.JTextArea();
+        jScrollPane1.setViewportView(textResult);
+        
+        textResult.setColumns(20);
+        textResult.setRows(5);
+        listFiles = new javax.swing.JList<>();
+        scrollFilesPanesl.setViewportView(listFiles);
+        
+                listFiles.setModel(new AbstractListModel<String>() {
+                	String[] values = new String[] {"1H4.txt", "1H6.txt", "2H4.txt", "2H6.txt", "3H6.txt", "Ado.txt", "Ant.txt", "AWW.txt"};
+                	public int getSize() {
+                		return values.length;
+                	}
+                	public String getElementAt(int index) {
+                		return values[index];
+                	}
+                });
+        getContentPane().setLayout(layout);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -154,10 +174,46 @@ public class MainView extends javax.swing.JFrame implements IMainView{
     }//GEN-LAST:event_btnAddFileActionPerformed
 
     private void btnFindWordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFindWordActionPerformed
+    	arqlocation = null;
+    	arqlocation = new HashMap<Integer, ArrayList<WordLocation>>();
+    	List<String> lisFiles = getListFiles();
+    	ArrayList<String> testos = new ArrayList<String>();
+    	LeituraArquivo leitura = new LeituraArquivo();
+    	ISearchStrategy busca[] = {
+    			new NaiveSearch(),
+    			new KMPSearch(),
+    			new BoyerMooreSearch(),
+    			new RabinKarpSearch()
+    			}; 
+    	
+    	int arq=0;
+    	for (Iterator<String> iterator = lisFiles.iterator(); iterator.hasNext();) {
+			String string = (String) iterator.next();
+			try {
+				testos.add(leitura.leArquivo(string).toString());
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+    	for (Iterator<String> iterator = testos.iterator(); iterator.hasNext();) {
+			String string = (String) iterator.next();
+	    	ArrayList<WordLocation> listaResultados = new ArrayList<WordLocation>();
+			listaResultados.add(busca[0].search(string, getTextWordToFind()));
+			listaResultados.add(busca[1].search(string, getTextWordToFind()));
+			listaResultados.add(busca[2].search(string, getTextWordToFind()));
+			listaResultados.add(busca[3].search(string, getTextWordToFind()));
+			busca[0].limpa();
+			busca[1].limpa();
+			busca[2].limpa();
+			busca[3].limpa();
+			arqlocation.put(arq, listaResultados);
+		}
         // TODO add your handling code here:
     }//GEN-LAST:event_btnFindWordActionPerformed
 
     private void btnExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExitActionPerformed
+    	System.exit(NORMAL);
         // TODO add your handling code here:
     }//GEN-LAST:event_btnExitActionPerformed
 

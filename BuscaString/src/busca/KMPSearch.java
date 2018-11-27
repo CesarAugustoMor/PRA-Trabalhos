@@ -129,4 +129,11 @@ public class KMPSearch implements ISearchStrategy {
 		}
 		return lps;
 	}
+
+	@Override
+	public void limpa() {
+		linhas=null;
+		tamanhoLinhas=null;
+		
+	}
 }

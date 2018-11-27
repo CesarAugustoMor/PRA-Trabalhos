@@ -82,4 +82,11 @@ public class BoyerMooreSearch implements ISearchStrategy {
 		}
 		return map;
 	}
+
+	@Override
+	public void limpa() {
+		tamanhoLinhas=null;
+		linhas=null;
+		
+	}
 }

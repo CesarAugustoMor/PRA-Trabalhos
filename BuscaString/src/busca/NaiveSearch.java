@@ -54,4 +54,10 @@ public class NaiveSearch implements ISearchStrategy {
 		this.linhas = prePrepareSearch(text);
 	}
 
+	@Override
+	public void limpa() {
+		linhas=null;
+		
+	}
+
 }

@@ -9,6 +9,8 @@ import java.util.ArrayList;
 public interface ISearchStrategy {
 
 	public abstract void prepareSearch(String text);
+	
+	public abstract void limpa();
 
 	public default void prepareSearch(char[] text) {
 		prepareSearch(text.toString());
