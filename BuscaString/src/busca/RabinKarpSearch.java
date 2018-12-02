@@ -41,7 +41,7 @@ public class RabinKarpSearch implements ISearchStrategy {
 			// Calculate the hash value of pattern and first
 			// window of text
 			for (i = 0; i < M; i++) {
-				geraPrimeiroHashText(index);
+				geraPrimeiroHashText(index,M);
 			}
 
 			// Slide the pattern over text one by one
@@ -78,8 +78,10 @@ public class RabinKarpSearch implements ISearchStrategy {
 		return nul;
 	}
 
-	private void geraPrimeiroHashText(int index) {
-		hashText = (ALPHABET_SIZE * hashText + linhas.get(index).charAt(i)) % q;
+	private void geraPrimeiroHashText(int index,int m) {
+		if (linhas.get(index).length()>=m) {
+			hashText = (ALPHABET_SIZE * hashText + linhas.get(index).charAt(i)) % q;
+		}
 	}
 
 	private boolean letrasDiferentes(String word, int index) {

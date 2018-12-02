@@ -91,7 +91,10 @@ public class KMPSearch implements ISearchStrategy {
 	}
 
 	private boolean letrasIguais(String word, int index) {
-		return this.linhas.get(index).charAt(i) == word.charAt(j);
+		if (this.linhas.get(index).length()>i&&word.length()>j) {
+			return this.linhas.get(index).charAt(i) == word.charAt(j);
+		}
+		return false;
 	}
 
 	private boolean aindaExisteTexto(int index) {

@@ -22,7 +22,6 @@ public class LeituraArquivo {
 		StringBuilder retorno=new StringBuilder();
 		for (int i = 0; i < linhasArquivo.size(); i++) {
 			retorno.append(linhasArquivo.get(i));
-			System.out.println(retorno.toString());
 			retorno.append("\n");
 		}
 		return retorno;

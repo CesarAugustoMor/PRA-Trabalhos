@@ -200,15 +200,48 @@ public class MainView extends javax.swing.JFrame implements IMainView{
 			String string = (String) iterator.next();
 	    	ArrayList<WordLocation> listaResultados = new ArrayList<WordLocation>();
 			listaResultados.add(busca[0].search(string, getTextWordToFind()));
-			listaResultados.add(busca[1].search(string, getTextWordToFind()));
-			listaResultados.add(busca[2].search(string, getTextWordToFind()));
-			listaResultados.add(busca[3].search(string, getTextWordToFind()));
 			busca[0].limpa();
+			listaResultados.add(busca[1].search(string, getTextWordToFind()));
 			busca[1].limpa();
+			listaResultados.add(busca[2].search(string, getTextWordToFind()));
 			busca[2].limpa();
+			listaResultados.add(busca[3].search(string, getTextWordToFind()));
 			busca[3].limpa();
 			arqlocation.put(arq, listaResultados);
 		}
+		StringBuilder result = new StringBuilder();
+		result.append("Palavra encontrada em:\n");
+		for (int i = 0; i < arqlocation.size(); i++) {
+			result.append("No Arquivo "+lisFiles.get(i)+":\n");
+				for (int j = 0; j < arqlocation.get(i).size(); j++) {
+					if ((arqlocation.get(i).get(j).getColumn()>0)&&(arqlocation.get(i).get(j).getLine()>0)) {
+						if (j==0) {
+							result.append("NaiveSearch:\n");
+						}else if (j==1) {
+							result.append("KMPSearch:\n");
+						}else if (j==2) {
+							result.append("BoyerMooreSearch:\n");
+						}else {
+							result.append("RabinKarpSearch:\n");
+						}
+						result.append("Linha: "+arqlocation.get(i).get(j).getLine()+" e Coluna: "+arqlocation.get(i).get(j).getColumn()+"\n");
+					}else {
+						if (j==0) {
+							result.append("NaiveSearch:\n");
+						}else if (j==1) {
+							result.append("KMPSearch:\n");
+						}else if (j==2) {
+							result.append("BoyerMooreSearch:\n");
+						}else {
+							result.append("RabinKarpSearch:\n");
+						}
+						result.append("Não foi possivel achar.\n");
+					}
+				}
+				
+			result.append("\n");
+		}
+		setTextResultValue(result.toString());
         // TODO add your handling code here:
     }//GEN-LAST:event_btnFindWordActionPerformed
 

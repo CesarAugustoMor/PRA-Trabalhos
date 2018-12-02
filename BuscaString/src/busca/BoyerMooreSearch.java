@@ -29,17 +29,20 @@ public class BoyerMooreSearch implements ISearchStrategy {
 
 	@Override
 	public WordLocation search(String word) {
-		int m = word.length();
+		int n = word.length();
 		Map<Character, Integer> rightMostIndexes = preprocessForBadCharacterShift(word);
 
 		for (int index = 0; index < this.linhas.size(); index++) {
-			while (alignedAt + (m - 1) < this.tamanhoLinhas.get(index)) {
-				for (int indexWord = m - 1; indexWord >= 0; indexWord--) {
+			while (alignedAt + (n - 1) < this.tamanhoLinhas.get(index)) {
+				for (int indexWord = n - 1; indexWord >= 0; indexWord--) {
 					int indexText = alignedAt + indexWord;
 					char x = this.linhas.get(index).charAt(indexText);
 					char y = word.charAt(indexWord);
-					if (indexText >= this.tamanhoLinhas.get(index))
+					System.out.println(x+" "+"pri"+" "+y+" "+);
+					if (indexText >= this.tamanhoLinhas.get(index)) {
+						System.out.println(x+" "+y);
 						break;
+					}
 					if (letrasDiferentes(x, y)) {
 						Integer r = rightMostIndexes.get(x);
 						if (r == null) {
@@ -50,6 +53,7 @@ public class BoyerMooreSearch implements ISearchStrategy {
 						}
 						break;
 					} else if (indexWord == 0) {
+						System.out.println("linha: "+index+",Coluna: "+alignedAt);
 						return geraLocalizacaoWord(index, alignedAt);
 					}
 				}
@@ -63,6 +67,7 @@ public class BoyerMooreSearch implements ISearchStrategy {
 	}
 
 	private boolean letrasDiferentes(char a, char b) {
+		System.out.println(a+" "+"teste letra"+" "+b+" "+(a!=b));
 		return a != b;
 	}
 
